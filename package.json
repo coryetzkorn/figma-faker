@@ -4,8 +4,8 @@
   "description": "Generate massive amounts of realistic fake data in Figma",
   "main": "code.js",
   "scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "npx webpack --mode=production"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack --mode=production"
   },
   "author": "Cory Etzkorn",
   "license": "MIT",

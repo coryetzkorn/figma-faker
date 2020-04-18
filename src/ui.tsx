@@ -1,41 +1,87 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
+import fakerOptions, { FakerOptionGroup, FakerOption } from "./fakerOptions"
+
 import "./ui.css"
 
 declare function require(path: string): any
 
-class App extends React.Component {
-  textbox: HTMLInputElement
+interface IProps {}
 
-  countRef = (element: HTMLInputElement) => {
-    if (element) element.value = "5"
-    this.textbox = element
-  }
+const initialState = { selectedMethod: null }
 
-  onRun = () => {
-    //const count = parseInt(this.textbox.value, 10)
-    parent.postMessage({ pluginMessage: { type: "run-faker" } }, "*")
-  }
+type IState = Readonly<typeof initialState>
 
-  onCancel = () => {
-    parent.postMessage({ pluginMessage: { type: "cancel" } }, "*")
-  }
+class App extends React.Component<IProps, IState> {
+  /** Lifecycle */
+
+  readonly state: IState = initialState
+
+  /** Render */
 
   render() {
     return (
       <div>
-        <h2>👻 Faker</h2>
-        <p>Generate massive amounts of realistic fake data in Figma</p>
-        <select>
-          <option value="names">Names</option>
-          <option value="numbers">Numbers</option>
-        </select>
+        {this.state.selectedMethod && (
+          <div>
+            Selected state:
+            <br />
+            {this.state.selectedMethod}
+          </div>
+        )}
+        {fakerOptions.map((optionGroup) => this.renderOptionGroup(optionGroup))}
         <button id="create" onClick={this.onRun}>
           Create
         </button>
         <button onClick={this.onCancel}>Cancel</button>
       </div>
     )
+  }
+
+  private renderOptions(optionGroup: FakerOptionGroup) {
+    return (
+      <select>
+        <option value="names">Test</option>
+        <option value="numbers">Numbers</option>
+      </select>
+    )
+  }
+
+  private renderOptionGroup(optionGroup: FakerOptionGroup) {
+    return (
+      <div>
+        <p>{optionGroup.name}</p>
+        <select onChange={this.onChange}>
+          {optionGroup.children.map((option) => {
+            return <option value={option.methodName}>{option.name}</option>
+          })}
+        </select>
+      </div>
+    )
+  }
+
+  /** Events */
+
+  private onChange = (event) => {
+    this.setState({
+      selectedMethod: event.target.value,
+    })
+  }
+
+  private onRun = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "run-faker",
+          fakerMethod: this.state.selectedMethod,
+        },
+      },
+      "*"
+    )
+  }
+
+  private onCancel = () => {
+    parent.postMessage({ pluginMessage: { type: "cancel" } }, "*")
   }
 }
 

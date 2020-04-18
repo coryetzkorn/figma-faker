@@ -29,17 +29,17 @@ function traverseSelection() {
   }
 }
 
-function replaceText() {
+function replaceText(fakerMethodName: string) {
+  const fakerMethod = Faker.address[fakerMethodName]
   if (textNodes.length) {
     for (const textNode of textNodes) {
-      const fakeName = Faker.name.findName()
       figma
         .loadFontAsync({
           family: "Roboto",
           style: "Regular",
         })
         .then(() => {
-          textNode.characters = fakeName
+          textNode.characters = fakerMethod()
         })
     }
   } else {
@@ -51,7 +51,7 @@ figma.ui.onmessage = (msg) => {
   console.log(msg)
   if (msg.type === "run-faker") {
     traverseSelection()
-    replaceText()
+    replaceText(msg.fakerMethod)
     // figma.currentPage.selection = textNodes
     // figma.viewport.scrollAndZoomIntoView(textNodes)
   }
