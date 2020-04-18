@@ -1,6 +1,6 @@
 import * as Faker from "faker"
 
-figma.showUI(__html__)
+figma.showUI(__html__, { height: 400, width: 300 })
 
 const textNodes: TextNode[] = []
 
