@@ -1,4 +1,5 @@
 import * as Faker from "faker"
+import { IFakerMethod } from "./ui"
 
 figma.showUI(__html__, { height: 400, width: 300 })
 
@@ -29,8 +30,8 @@ function traverseSelection() {
   }
 }
 
-function replaceText(fakerMethodName: string) {
-  const fakerMethod = Faker.address[fakerMethodName]
+function replaceText(fakerMethods: IFakerMethod) {
+  const fakerMethod = Faker[fakerMethods.parentMethod][fakerMethods.childMethod]
   if (textNodes.length) {
     for (const textNode of textNodes) {
       figma
@@ -51,7 +52,7 @@ figma.ui.onmessage = (msg) => {
   console.log(msg)
   if (msg.type === "run-faker") {
     traverseSelection()
-    replaceText(msg.fakerMethod)
+    replaceText(msg.fakerMethods)
     // figma.currentPage.selection = textNodes
     // figma.viewport.scrollAndZoomIntoView(textNodes)
   }

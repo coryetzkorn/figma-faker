@@ -10,27 +10,30 @@ declare function require(path: string): any
 
 interface IProps {}
 
+export interface IFakerMethod {
+  parentMethod: string
+  label: string
+  childMethod: string
+}
+
 const initialState = { selectedMethod: null, searchString: null }
 
 type IState = Readonly<typeof initialState>
 
 class App extends React.Component<IProps, IState> {
-  /** Lifecycle */
+  // ===========================================================================
+  // Lifecyle.
+  // ===========================================================================
 
   readonly state: IState = initialState
 
-  /** Render */
+  // ===========================================================================
+  // Render.
+  // ===========================================================================
 
   render() {
     return (
       <div style={{ fontFamily: App.figmaStyles.border }}>
-        {this.state.selectedMethod && (
-          <div>
-            Selected state:
-            <br />
-            {this.state.selectedMethod}
-          </div>
-        )}
         <div style={{ position: "relative", width: "100%", marginBottom: 20 }}>
           <input
             style={{ width: "100%", border: App.figmaStyles.border }}
@@ -47,13 +50,15 @@ class App extends React.Component<IProps, IState> {
           Run
         </button>
         <button onClick={this.onCancel}>Cancel</button>
+        {this.state.selectedMethod && (
+          <div>{this.state.selectedMethod.label}</div>
+        )}
       </div>
     )
   }
 
   private renderOptions() {
     const options = this.getFilteredOptions()
-    console.log(options)
     return (
       <div style={{ height: 280, overflowX: "scroll" }}>
         <div style={{ margin: "-10px 0" }}>
@@ -88,8 +93,18 @@ class App extends React.Component<IProps, IState> {
           {optionGroup.children.map((option) => {
             return (
               <li
-                style={{ ...App.itemStyle, paddingLeft: "2em" }}
-                onClick={() => this.onChange(option.methodName)}
+                style={{
+                  ...App.itemStyle,
+                  cursor: "pointer",
+                  paddingLeft: "2em",
+                }}
+                onClick={() =>
+                  this.onChange({
+                    label: option.name,
+                    childMethod: option.methodName,
+                    parentMethod: optionGroup.methodName,
+                  })
+                }
               >
                 {option.name}
               </li>
@@ -100,7 +115,9 @@ class App extends React.Component<IProps, IState> {
     )
   }
 
-  /** Helpers */
+  // ===========================================================================
+  // Helpers.
+  // ===========================================================================
 
   private getFilteredOptions = () => {
     const searchString = this.state.searchString
@@ -123,7 +140,9 @@ class App extends React.Component<IProps, IState> {
     }
   }
 
-  /** Events */
+  // ===========================================================================
+  // Events.
+  // ===========================================================================
 
   private handleSearch = (e) => {
     this.setState({
@@ -131,9 +150,9 @@ class App extends React.Component<IProps, IState> {
     })
   }
 
-  private onChange = (method) => {
+  private onChange = (fakerMethods: IFakerMethod) => {
     this.setState({
-      selectedMethod: method,
+      selectedMethod: fakerMethods,
     })
   }
 
@@ -142,7 +161,7 @@ class App extends React.Component<IProps, IState> {
       {
         pluginMessage: {
           type: "run-faker",
-          fakerMethod: this.state.selectedMethod,
+          fakerMethods: this.state.selectedMethod,
         },
       },
       "*"
@@ -153,7 +172,9 @@ class App extends React.Component<IProps, IState> {
     parent.postMessage({ pluginMessage: { type: "cancel" } }, "*")
   }
 
-  /** Styles */
+  // ==========================================================================
+  // Styles.
+  // ===========================================================================
 
   private static figmaStyles = {
     border: "1px solid #e5e5e5",
