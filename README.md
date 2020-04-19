@@ -24,6 +24,7 @@ Faker is built on top of [faker.js](https://github.com/Marak/faker.js).
 
 + Install it from the [Figma plugin library](https://www.figma.com/community/plugin/833836762121994814)
 + Select one or more objects
++ Open the plugin and select a placeholder text option
 + Any text nodes in the selection will be replaced with the Faker text of your choice
 
 ## Development
