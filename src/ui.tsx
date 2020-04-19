@@ -2,7 +2,6 @@ import * as React from "react"
 import { CSSProperties } from "react"
 import * as ReactDOM from "react-dom"
 import fakerOptions from "./fakerOptions"
-import * as _ from "lodash"
 import { IFakerOption, IFakerOptionGroup, IPluginMessage } from "./faker"
 
 import "./ui.css"
@@ -49,7 +48,6 @@ class App extends React.Component<IProps, IState> {
       <div
         style={{
           fontFamily: App.figmaStyles.fontFamily,
-          webkitFontSmoothing: "antialiased",
           cursor: "default",
         }}
       >

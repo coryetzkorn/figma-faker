@@ -2,6 +2,8 @@ body {
   font: 12px sans-serif;
   text-align: center;
   margin: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 input {
   border: none;

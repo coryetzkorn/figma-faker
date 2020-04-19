@@ -302,7 +302,7 @@ const fakerOptions: IFakerOptions = [
         methodName: "finance.accountName",
       },
       {
-        name: "Ammount",
+        name: "Amount",
         methodName: "finance.amount",
       },
       {
@@ -356,7 +356,7 @@ const fakerOptions: IFakerOptions = [
         methodName: "hacker.verb",
       },
       {
-        name: "ING verb",
+        name: "Verb (ending in ING)",
         methodName: "hacker.ingverb",
       },
       {

@@ -35,14 +35,16 @@ function traverseSelection() {
 }
 
 function replaceText(fakerOption: IFakerOption) {
-  const fakerMethodArray = fakerOption.methodName.split(".")
-  const fakerMethod = Faker[fakerMethodArray[0]][fakerMethodArray[1]]
   if (textNodes.length) {
+    const fakerMethodArray = fakerOption.methodName.split(".")
+    const fakerMethod = Faker[fakerMethodArray[0]][fakerMethodArray[1]]
     for (const textNode of textNodes) {
       figma.loadFontAsync(textNode.fontName as FontName).then(() => {
         textNode.characters = fakerMethod().toString()
       })
     }
+  } else {
+    figma.closePlugin("Select at least one text node before using Faker.")
   }
 }
 
