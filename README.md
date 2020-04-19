@@ -43,9 +43,9 @@ npm run build
 
 After that open a project in Figma Desktop, select _Plugins -> Development -> New Plugin_. Click `Choose a manifest.json` and find the `manifest.json` file in this plugin directory.
 
-Done! Now _Plugins -> Development -> Faker_
+Done! Now access via _Plugins -> Development -> Faker_
 
-## ToDo
+## To-do
 
 - [ ] Better / more human date formatting
 
