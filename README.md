@@ -1,8 +1,10 @@
 # Figma Faker Plugin
 
-Generate massive amounts of realistic fake data in Figma.
+![Faker](banner.png)
 
-This is a UI built on top of [faker.js](https://github.com/Marak/faker.js).
+<!-- prettier-ignore -->
+Quickly generate realistic placeholder text. Names, emails, URLs, headlines, and more.
+Faker is built on top of [faker.js](https://github.com/Marak/faker.js).
 
 ## Data Included
 + Names
@@ -20,7 +22,7 @@ This is a UI built on top of [faker.js](https://github.com/Marak/faker.js).
 
 ## Usage
 
-+ Install it from the [Figma plugin library](https://www.figma.com/community).
++ Install it from the [Figma plugin library](https://www.figma.com/community/plugin/833836762121994814)
 + Select one or more objects
 + Any text nodes in the selection will be replaced with the Faker text of your choice
 

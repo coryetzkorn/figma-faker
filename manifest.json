@@ -1,7 +1,7 @@
 {
   "name": "Faker",
-  "id": "833216514131683825",
+  "id": "833836762121994814",
   "api": "1.0.0",
   "main": "dist/code.js",
-  "ui": "dist/ui.html"
+	"ui": "dist/ui.html"
 }
