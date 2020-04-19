@@ -1,7 +1,7 @@
 import * as Faker from "faker"
 import { IFakerMethod } from "./ui"
 
-figma.showUI(__html__, { height: 400, width: 300 })
+figma.showUI(__html__, { height: 340, width: 240 })
 
 const textNodes: TextNode[] = []
 
@@ -23,6 +23,10 @@ function traverseNodes(parentNode: SceneNode) {
   }
 }
 
+function clearTextNodes() {
+  textNodes.length = 0
+}
+
 function traverseSelection() {
   const selection = figma.currentPage.selection
   for (const selectedNode of selection) {
@@ -40,22 +44,17 @@ function replaceText(fakerMethods: IFakerMethod) {
           style: "Regular",
         })
         .then(() => {
-          textNode.characters = fakerMethod()
+          textNode.characters = fakerMethod().toString()
         })
     }
-  } else {
-    alert("No text nodes selected.")
   }
 }
 
 figma.ui.onmessage = (msg) => {
   console.log(msg)
   if (msg.type === "run-faker") {
+    clearTextNodes()
     traverseSelection()
     replaceText(msg.fakerMethods)
-    // figma.currentPage.selection = textNodes
-    // figma.viewport.scrollAndZoomIntoView(textNodes)
   }
-
-  figma.closePlugin()
 }

@@ -16,7 +16,7 @@ export interface IFakerMethod {
   childMethod: string
 }
 
-const initialState = { selectedMethod: null, searchString: null }
+const initialState = { searchString: null }
 
 type IState = Readonly<typeof initialState>
 
@@ -26,6 +26,11 @@ class App extends React.Component<IProps, IState> {
   // ===========================================================================
 
   readonly state: IState = initialState
+  private static searchInputRef = React.createRef<HTMLInputElement>()
+
+  componentDidMount() {
+    this.setSearchFocus()
+  }
 
   // ===========================================================================
   // Render.
@@ -33,10 +38,17 @@ class App extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div style={{ fontFamily: App.figmaStyles.border }}>
-        <div style={{ position: "relative", width: "100%", marginBottom: 20 }}>
+      <div
+        style={{
+          fontFamily: App.figmaStyles.fontFamily,
+          webkitFontSmoothing: "antialiased",
+          cursor: "default",
+        }}
+      >
+        <div style={{ position: "relative", width: "100%", marginBottom: 10 }}>
           <input
-            style={{ width: "100%", border: App.figmaStyles.border }}
+            ref={App.searchInputRef}
+            style={{ width: "100%" }}
             placeholder="Search"
             onChange={this.handleSearch}
           ></input>
@@ -46,26 +58,29 @@ class App extends React.Component<IProps, IState> {
           />
         </div>
         <div>{this.renderOptions()}</div>
-        <button id="create" onClick={this.onRun}>
-          Run
-        </button>
-        <button onClick={this.onCancel}>Cancel</button>
-        {this.state.selectedMethod && (
-          <div>{this.state.selectedMethod.label}</div>
-        )}
       </div>
     )
   }
 
   private renderOptions() {
     const options = this.getFilteredOptions()
+    const optionsHeight = 260
     return (
-      <div style={{ height: 280, overflowX: "scroll" }}>
+      <div style={{ height: optionsHeight, overflowX: "scroll" }}>
         <div style={{ margin: "-10px 0" }}>
           {options.length ? (
             options.map((optionGroup) => this.renderOptionGroup(optionGroup))
           ) : (
-            <div style={{ padding: "30px 0" }}>No Results 😢</div>
+            <div
+              style={{
+                height: optionsHeight,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div>No Results 😢</div>
+            </div>
           )}
         </div>
       </div>
@@ -81,25 +96,15 @@ class App extends React.Component<IProps, IState> {
           margin: "10px 0",
         }}
       >
-        <div
-          style={{
-            ...App.itemStyle,
-            fontWeight: App.figmaStyles.fontWeight.bold,
-          }}
-        >
-          {optionGroup.name}
-        </div>
-        <ul style={{ margin: 0, padding: 0 }}>
+        <div style={App.headerStyle}>{optionGroup.name}</div>
+        <ul style={{ margin: 0, padding: "5px 0" }}>
           {optionGroup.children.map((option) => {
             return (
               <li
-                style={{
-                  ...App.itemStyle,
-                  cursor: "pointer",
-                  paddingLeft: "2em",
-                }}
+                className="hoverable"
+                style={App.itemStyle}
                 onClick={() =>
-                  this.onChange({
+                  this.runFaker({
                     label: option.name,
                     childMethod: option.methodName,
                     parentMethod: optionGroup.methodName,
@@ -119,11 +124,26 @@ class App extends React.Component<IProps, IState> {
   // Helpers.
   // ===========================================================================
 
+  private setSearchFocus = () => {
+    App.searchInputRef.current.focus()
+  }
+
+  private clearSearchString = () => {
+    this.setState({
+      searchString: "",
+    })
+    App.searchInputRef.current.value = ""
+  }
+
+  private clone = (obj: object) => {
+    return JSON.parse(JSON.stringify(obj))
+  }
+
   private getFilteredOptions = () => {
     const searchString = this.state.searchString
     if (searchString) {
       const cleanSearchString = searchString.toLowerCase()
-      const allFakerOptions = _.cloneDeep(fakerOptions)
+      const allFakerOptions = this.clone(fakerOptions)
       const filteredGroups = allFakerOptions.map((group) => {
         const filteredGroup = group
         const filteredChildren = group.children.filter((child) =>
@@ -150,22 +170,17 @@ class App extends React.Component<IProps, IState> {
     })
   }
 
-  private onChange = (fakerMethods: IFakerMethod) => {
-    this.setState({
-      selectedMethod: fakerMethods,
-    })
-  }
-
-  private onRun = () => {
+  private runFaker = (fakerMethods: IFakerMethod) => {
     parent.postMessage(
       {
         pluginMessage: {
           type: "run-faker",
-          fakerMethods: this.state.selectedMethod,
+          fakerMethods: fakerMethods,
         },
       },
       "*"
     )
+    this.clearSearchString()
   }
 
   private onCancel = () => {
@@ -185,12 +200,26 @@ class App extends React.Component<IProps, IState> {
     fontWeight: {
       bold: 600,
     },
+    color: {
+      hover: "rgba(0,0,0,.06)",
+    },
+    borderRadius: 3,
+  }
+
+  private static headerStyle: CSSProperties = {
+    listStyle: "none",
+    margin: 0,
+    padding: "8px 0",
+    fontWeight: App.figmaStyles.fontWeight.bold,
+    position: "sticky",
+    top: 0,
+    background: "#FFF",
+    borderBottom: App.figmaStyles.border,
   }
 
   private static itemStyle: CSSProperties = {
     listStyle: "none",
-    margin: 0,
-    padding: "5px 0",
+    padding: 6,
   }
 }
 
