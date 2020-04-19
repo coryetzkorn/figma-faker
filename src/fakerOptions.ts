@@ -1,390 +1,367 @@
-export interface FakerOption {
-  name: string
-  methodName: string
-}
+import { IFakerOptions } from "./faker"
 
-export interface FakerOptionGroup {
-  name: string
-  methodName: string
-  children: Array<FakerOption>
-}
-
-export type FakerOptions = Array<FakerOptionGroup>
-
-const fakerOptions: FakerOptions = [
+const fakerOptions: IFakerOptions = [
   {
     name: "Name",
-    methodName: "name",
     children: [
       {
         name: "First name",
-        methodName: "firstName",
+        methodName: "name.firstName",
       },
       {
         name: "Last name",
-        methodName: "lastName",
+        methodName: "name.lastName",
       },
       {
         name: "Prefix",
-        methodName: "prefix",
+        methodName: "name.prefix",
       },
       {
         name: "Suffix",
-        methodName: "suffix",
+        methodName: "name.suffix",
       },
       {
         name: "Job title",
-        methodName: "jobTitle",
+        methodName: "name.jobTitle",
       },
       {
         name: "Job descriptor",
-        methodName: "jobDescriptor",
+        methodName: "name.jobDescriptor",
       },
       {
         name: "Job area",
-        methodName: "jobArea",
+        methodName: "name.jobArea",
       },
       {
         name: "Job type",
-        methodName: "jobType",
+        methodName: "name.jobType",
       },
     ],
   },
   {
     name: "Internet",
-    methodName: "internet",
     children: [
       {
         name: "Email address",
-        methodName: "email",
+        methodName: "internet.email",
       },
       {
         name: "Username",
-        methodName: "userName",
+        methodName: "internet.userName",
       },
       {
         name: "Password",
-        methodName: "password",
+        methodName: "internet.password",
       },
       {
         name: "URL",
-        methodName: "url",
+        methodName: "internet.url",
       },
       {
         name: "Domain name",
-        methodName: "domainName",
+        methodName: "internet.domainName",
       },
       {
         name: "IP address",
-        methodName: "ip",
+        methodName: "internet.ip",
       },
       {
         name: "Hex color",
-        methodName: "color",
+        methodName: "internet.color",
       },
     ],
   },
   {
     name: "Lorem Ipsum",
-    methodName: "lorem",
     children: [
       {
         name: "Single word",
-        methodName: "word",
+        methodName: "lorem.word",
       },
       {
         name: "Multiple words",
-        methodName: "words",
+        methodName: "lorem.words",
       },
       {
         name: "Single sentence",
-        methodName: "sentence",
+        methodName: "lorem.sentence",
       },
       {
         name: "Multiple sentences",
-        methodName: "sentences",
+        methodName: "lorem.sentences",
       },
       {
         name: "Single paragraph",
-        methodName: "paragraph",
+        methodName: "lorem.paragraph",
       },
       {
         name: "Multiple paragraphs",
-        methodName: "paragraphs",
+        methodName: "lorem.paragraphs",
       },
       {
         name: "Slug",
-        methodName: "slug",
+        methodName: "lorem.slug",
       },
     ],
   },
   {
     name: "Address",
-    methodName: "address",
     children: [
       {
         name: "Zip code",
-        methodName: "zipCode",
+        methodName: "address.zipCode",
       },
       {
         name: "City",
-        methodName: "city",
+        methodName: "address.city",
       },
       {
         name: "City prefix",
-        methodName: "cityPrefix",
+        methodName: "address.cityPrefix",
       },
       {
         name: "City suffix",
-        methodName: "citySuffix",
+        methodName: "address.citySuffix",
       },
       {
         name: "Street name",
-        methodName: "streetName",
+        methodName: "address.streetName",
       },
       {
         name: "Street address",
-        methodName: "streetAddress",
+        methodName: "address.streetAddress",
       },
       {
         name: "Street suffix",
-        methodName: "streetSuffix",
+        methodName: "address.streetSuffix",
       },
       {
         name: "Street prefix",
-        methodName: "streetPrefix",
+        methodName: "address.streetPrefix",
       },
       {
         name: "Secondary address",
-        methodName: "secondaryAddress",
+        methodName: "address.secondaryAddress",
       },
       {
         name: "County",
-        methodName: "county",
+        methodName: "address.county",
       },
       {
         name: "Country",
-        methodName: "country",
+        methodName: "address.country",
       },
       {
         name: "Country code",
-        methodName: "countryCode",
+        methodName: "address.countryCode",
       },
       {
         name: "State",
-        methodName: "state",
+        methodName: "address.state",
       },
       {
         name: "State abbreviation",
-        methodName: "stateAbbr",
+        methodName: "address.stateAbbr",
       },
       {
         name: "Latitude",
-        methodName: "latitude",
+        methodName: "address.latitude",
       },
       {
         name: "Longitude",
-        methodName: "longitude",
+        methodName: "address.longitude",
       },
     ],
   },
   {
     name: "Phone",
-    methodName: "phone",
     children: [
       {
         name: "Phone number",
-        methodName: "phoneNumberFormat",
+        methodName: "phone.phoneNumberFormat",
       },
     ],
   },
   {
     name: "Random",
-    methodName: "random",
     children: [
       {
         name: "Number",
-        methodName: "number",
+        methodName: "random.number",
       },
       {
         name: "Alphanumeric",
-        methodName: "alphaNumeric",
+        methodName: "random.alphaNumeric",
       },
       {
         name: "Word",
-        methodName: "word",
+        methodName: "random.word",
       },
       {
         name: "Multiple words",
-        methodName: "words",
+        methodName: "random.words",
       },
       {
         name: "UUID",
-        methodName: "uuid",
+        methodName: "random.uuid",
       },
     ],
   },
   {
     name: "Commerce",
-    methodName: "commerce",
     children: [
       {
         name: "Color (word)",
-        methodName: "color",
+        methodName: "commerce.color",
       },
       {
         name: "Department",
-        methodName: "department",
+        methodName: "commerce.department",
       },
       {
         name: "Product name",
-        methodName: "productName",
+        methodName: "commerce.productName",
       },
       {
         name: "Price",
-        methodName: "price",
+        methodName: "commerce.price",
       },
       {
         name: "Product adjective",
-        methodName: "productAdjective",
+        methodName: "commerce.productAdjective",
       },
       {
         name: "Product material",
-        methodName: "productMaterial",
+        methodName: "commerce.productMaterial",
       },
       {
         name: "Product name",
-        methodName: "product",
+        methodName: "commerce.product",
       },
     ],
   },
   {
     name: "Company",
-    methodName: "company",
     children: [
       {
         name: "Company name",
-        methodName: "companyName",
+        methodName: "company.companyName",
       },
       {
         name: "Catch phrase",
-        methodName: "catchPhrase",
+        methodName: "company.catchPhrase",
       },
       {
         name: "BS Adjective",
-        methodName: "bsAdjective",
+        methodName: "company.bsAdjective",
       },
       {
         name: "BS Buzzword",
-        methodName: "bsBuzz",
+        methodName: "company.bsBuzz",
       },
       {
         name: "BS Noun",
-        methodName: "bsNoun",
+        methodName: "company.bsNoun",
       },
     ],
   },
   {
     name: "Date",
-    methodName: "date",
     children: [
       {
         name: "Past date",
-        methodName: "past",
+        methodName: "date.past",
       },
       {
         name: "Recent date",
-        methodName: "recent",
+        methodName: "date.recent",
       },
       {
         name: "Future date",
-        methodName: "future",
+        methodName: "date.future",
       },
       {
         name: "Month",
-        methodName: "month",
+        methodName: "date.month",
       },
       {
         name: "Day of the week",
-        methodName: "weekday",
+        methodName: "date.weekday",
       },
     ],
   },
   {
     name: "Finance",
-    methodName: "finance",
     children: [
       {
         name: "Account number",
-        methodName: "account",
+        methodName: "finance.account",
       },
       {
         name: "Account name",
-        methodName: "accountName",
+        methodName: "finance.accountName",
       },
       {
         name: "Ammount",
-        methodName: "amount",
+        methodName: "finance.amount",
       },
       {
         name: "Transaction type",
-        methodName: "transactionType",
+        methodName: "finance.transactionType",
       },
       {
         name: "Currency code",
-        methodName: "currencyCode",
+        methodName: "finance.currencyCode",
       },
       {
         name: "Currency name",
-        methodName: "currencyName",
+        methodName: "finance.currencyName",
       },
       {
         name: "Currency symbol",
-        methodName: "currencySymbol",
+        methodName: "finance.currencySymbol",
       },
     ],
   },
   {
     name: "System",
-    methodName: "system",
     children: [
       {
         name: "File name",
-        methodName: "commonFileName",
+        methodName: "system.commonFileName",
       },
       {
         name: "File type",
-        methodName: "commonFileExt",
+        methodName: "system.commonFileExt",
       },
     ],
   },
   {
     name: "Hacker",
-    methodName: "hacker",
     children: [
       {
         name: "Abbreviation",
-        methodName: "abbreviation",
+        methodName: "hacker.abbreviation",
       },
       {
         name: "Adjective",
-        methodName: "adjective",
+        methodName: "hacker.adjective",
       },
       {
         name: "Noun",
-        methodName: "noun",
+        methodName: "hacker.noun",
       },
       {
         name: "Verb",
-        methodName: "verb",
+        methodName: "hacker.verb",
       },
       {
         name: "ING verb",
-        methodName: "ingverb",
+        methodName: "hacker.ingverb",
       },
       {
         name: "Phrase",
-        methodName: "phrase",
+        methodName: "hacker.phrase",
       },
     ],
   },

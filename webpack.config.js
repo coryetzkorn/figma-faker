@@ -50,4 +50,6 @@ module.exports = (env, argv) => ({
     }),
     new HtmlWebpackInlineSourcePlugin(),
   ],
+
+  performance: { hints: false },
 })

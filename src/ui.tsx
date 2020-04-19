@@ -1,24 +1,23 @@
 import * as React from "react"
 import { CSSProperties } from "react"
 import * as ReactDOM from "react-dom"
-import fakerOptions, { FakerOptionGroup, FakerOption } from "./fakerOptions"
+import fakerOptions from "./fakerOptions"
 import * as _ from "lodash"
+import { IFakerOption, IFakerOptionGroup, IPluginMessage } from "./faker"
 
 import "./ui.css"
+import { string } from "prop-types"
 
 declare function require(path: string): any
 
 interface IProps {}
 
-export interface IFakerMethod {
-  parentMethod: string
-  label: string
-  childMethod: string
+interface IState {
+  searchString: string | null
+  recentOptions: Array<IFakerOption>
 }
 
-const initialState = { searchString: null }
-
-type IState = Readonly<typeof initialState>
+const initialState: IState = { searchString: null, recentOptions: [] }
 
 class App extends React.Component<IProps, IState> {
   // ===========================================================================
@@ -30,6 +29,15 @@ class App extends React.Component<IProps, IState> {
 
   componentDidMount() {
     this.setSearchFocus()
+    this.getLsRecents()
+    onmessage = (event: MessageEvent) => {
+      if (event && event.data) {
+        const pluginMessage = event.data.pluginMessage as IPluginMessage
+        if (pluginMessage.type === "ls-recents-ready") {
+          this.setInitialRecents(pluginMessage.data as Array<IFakerOption>)
+        }
+      }
+    }
   }
 
   // ===========================================================================
@@ -87,7 +95,7 @@ class App extends React.Component<IProps, IState> {
     )
   }
 
-  private renderOptionGroup(optionGroup: FakerOptionGroup) {
+  private renderOptionGroup(optionGroup: IFakerOptionGroup) {
     return (
       <div
         style={{
@@ -103,13 +111,7 @@ class App extends React.Component<IProps, IState> {
               <li
                 className="hoverable"
                 style={App.itemStyle}
-                onClick={() =>
-                  this.runFaker({
-                    label: option.name,
-                    childMethod: option.methodName,
-                    parentMethod: optionGroup.methodName,
-                  })
-                }
+                onClick={() => this.runFaker(option)}
               >
                 {option.name}
               </li>
@@ -139,24 +141,60 @@ class App extends React.Component<IProps, IState> {
     return JSON.parse(JSON.stringify(obj))
   }
 
+  private getOptionsWithRecents = () => {
+    const allFakerOptions = this.clone(fakerOptions)
+    if (this.state.recentOptions.length) {
+      const recentGroup: IFakerOptionGroup = {
+        name: "Recent",
+        children: this.clone(this.state.recentOptions),
+      }
+      return [recentGroup, ...allFakerOptions]
+    } else {
+      return allFakerOptions
+    }
+  }
+
   private getFilteredOptions = () => {
     const searchString = this.state.searchString
     if (searchString) {
       const cleanSearchString = searchString.toLowerCase()
-      const allFakerOptions = this.clone(fakerOptions)
+      const allFakerOptions = this.getOptionsWithRecents()
       const filteredGroups = allFakerOptions.map((group) => {
-        const filteredGroup = group
-        const filteredChildren = group.children.filter((child) =>
-          child.name.toLowerCase().includes(cleanSearchString)
-        )
-        if (filteredChildren.length) {
-          filteredGroup.children = filteredChildren
-          return filteredGroup
+        if (group.name.toLowerCase().includes(cleanSearchString)) {
+          return group
+        } else {
+          const filteredGroup = group
+          const filteredChildren = group.children.filter((child) =>
+            child.name.toLowerCase().includes(cleanSearchString)
+          )
+          if (filteredChildren.length) {
+            filteredGroup.children = filteredChildren
+            return filteredGroup
+          }
         }
       })
       return filteredGroups.filter(Boolean)
     } else {
-      return fakerOptions
+      return this.getOptionsWithRecents()
+    }
+  }
+
+  private setInitialRecents = (recentOptions: Array<IFakerOption>) => {
+    this.setState({
+      recentOptions: recentOptions,
+    })
+  }
+
+  private addToRecents = (fakerOption: IFakerOption) => {
+    const recentOptionMethodNames = this.state.recentOptions.map(
+      (item) => item.methodName
+    )
+    if (!recentOptionMethodNames.includes(fakerOption.methodName)) {
+      const recents = [fakerOption, ...this.state.recentOptions].slice(0, 3)
+      this.setState({
+        recentOptions: recents,
+      })
+      this.setLsRecents(recents)
     }
   }
 
@@ -170,16 +208,43 @@ class App extends React.Component<IProps, IState> {
     })
   }
 
-  private runFaker = (fakerMethods: IFakerMethod) => {
+  private setLsRecents = (fakerOptions: Array<IFakerOption>) => {
+    const pluginMessage: IPluginMessage = {
+      type: "set-ls-recents",
+      data: fakerOptions,
+    }
     parent.postMessage(
       {
-        pluginMessage: {
-          type: "run-faker",
-          fakerMethods: fakerMethods,
-        },
+        pluginMessage: pluginMessage,
       },
       "*"
     )
+  }
+
+  private getLsRecents = () => {
+    const pluginMessage: IPluginMessage = {
+      type: "get-ls-recents",
+    }
+    parent.postMessage(
+      {
+        pluginMessage: pluginMessage,
+      },
+      "*"
+    )
+  }
+
+  private runFaker = (fakerOption: IFakerOption) => {
+    const pluginMessage: IPluginMessage = {
+      type: "run-faker",
+      data: fakerOption,
+    }
+    parent.postMessage(
+      {
+        pluginMessage: pluginMessage,
+      },
+      "*"
+    )
+    this.addToRecents(fakerOption)
     this.clearSearchString()
   }
 
