@@ -246,10 +246,6 @@ class App extends React.Component<IProps, IState> {
     this.clearSearchString()
   }
 
-  private onCancel = () => {
-    parent.postMessage({ pluginMessage: { type: "cancel" } }, "*")
-  }
-
   // ==========================================================================
   // Styles.
   // ===========================================================================
