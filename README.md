@@ -20,7 +20,7 @@ This is a UI built on top of [faker.js](https://github.com/Marak/faker.js).
 ## Usage
 
 + Install it from the [Figma plugin library](https://www.figma.com/community).
-+ Select one of more objects
++ Select one or more objects
 + Any text nodes in the selection will be replaced with the Faker text of your choice
 
 ## Development
@@ -47,4 +47,4 @@ Done! Now _Plugins -> Development -> Faker_
 
 ## Author
 
-- Cory Etzkorn ([Twitter](https://twitter.com/coryetzkorn))
+Cory Etzkorn ([Twitter](https://twitter.com/coryetzkorn))
