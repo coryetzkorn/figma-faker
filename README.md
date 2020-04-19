@@ -1,6 +1,7 @@
 # Figma Faker Plugin
 
 Generate massive amounts of realistic fake data in Figma.
+
 This is a UI built on top of [faker.js](https://github.com/Marak/faker.js).
 
 ## Data Included
