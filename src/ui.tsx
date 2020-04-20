@@ -20,7 +20,7 @@ const initialState: IState = { searchString: null, recentOptions: [] }
 
 class App extends React.Component<IProps, IState> {
   // ===========================================================================
-  // Lifecyle.
+  // Lifecycle.
   // ===========================================================================
 
   readonly state: IState = initialState
