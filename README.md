@@ -1,6 +1,6 @@
 # Figma Faker Plugin
 
-![Faker](banner-v2.png)
+![Faker](banner-v3.png)
 
 Quickly generate realistic placeholder text. Names, emails, URLs, headlines, and more.
 Faker is built on top of [faker.js](https://github.com/Marak/faker.js).
