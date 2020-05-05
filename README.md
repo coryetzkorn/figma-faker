@@ -48,6 +48,7 @@ Done! Now access via _Plugins -> Development -> Faker_
 ## To-do
 
 - [ ] Better / more human date formatting
+- [ ] Add support for placeholder images
 
 ## Author
 
