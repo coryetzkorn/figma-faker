@@ -13,6 +13,10 @@ const fakerOptions: IFakerOptions = [
         methodName: "name.lastName",
       },
       {
+        name: "Full name",
+        methodName: "name.findName",
+      },
+      {
         name: "Prefix",
         methodName: "name.prefix",
       },
@@ -190,6 +194,10 @@ const fakerOptions: IFakerOptions = [
         methodName: "random.number",
       },
       {
+        name: "Float",
+        methodName: "random.float",
+      },
+      {
         name: "Alphanumeric",
         methodName: "random.alphaNumeric",
       },
@@ -204,6 +212,35 @@ const fakerOptions: IFakerOptions = [
       {
         name: "UUID",
         methodName: "random.uuid",
+      },
+    ],
+  },
+  {
+    name: "Data Type",
+    children: [
+      {
+        name: "Number",
+        methodName: "datatype.number",
+      },
+      {
+        name: "Float",
+        methodName: "datatype.float",
+      },
+      {
+        name: "Datetime",
+        methodName: "datatype.datetime",
+      },
+      {
+        name: "String",
+        methodName: "datatype.string",
+      },
+      {
+        name: "UUID",
+        methodName: "datatype.uuid",
+      },
+      {
+        name: "JSON",
+        methodName: "datatype.json",
       },
     ],
   },
