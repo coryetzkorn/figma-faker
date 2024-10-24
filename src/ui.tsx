@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker"
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 import { IFakerOption, IFakerOptionGroup, IPluginMessage } from "./faker"
@@ -160,21 +159,13 @@ function App() {
 
   const renderOptions = () => {
     const options = getFilteredOptions()
-    const optionsHeight = 260
     return (
-      <div style={{ height: optionsHeight, overflowX: "scroll" }}>
-        <div style={{ margin: "-10px 0" }}>
+      <div className="scroller">
+        <div>
           {options.length ? (
             options.map((optionGroup) => renderOptionGroup(optionGroup))
           ) : (
-            <div
-              style={{
-                height: optionsHeight,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="no-results">
               <div>No Results 😢</div>
             </div>
           )}
@@ -185,20 +176,17 @@ function App() {
 
   const renderOptionGroup = (optionGroup: IFakerOptionGroup) => {
     return (
-      <div
-        style={{
-          textAlign: "left",
-          fontSize: figmaStyles.fontSize.base,
-          margin: "5px 0",
-        }}
-      >
-        <div style={headerStyle}>{optionGroup.name}</div>
-        <ul style={{ margin: 0, padding: "5px 0" }}>
+      <div className="option-group">
+        <div className="option-group-header">{optionGroup.name}</div>
+        <ul
+          className="option-group-list"
+          style={{ margin: 0, padding: "5px 0" }}
+        >
           {optionGroup.children.map((option) => {
             return (
               <li
-                className="hoverable"
-                style={itemStyle}
+                key={option.methodName}
+                className="option-group-item"
                 onClick={() => runFaker(option)}
               >
                 {option.name}
@@ -210,21 +198,11 @@ function App() {
     )
   }
 
-  React.useEffect(() => {
-    console.log("--- faker ----", faker)
-  }, [])
-
   return (
-    <div
-      style={{
-        fontFamily: "Inter",
-        cursor: "default",
-      }}
-    >
+    <div>
       <div style={{ position: "relative", width: "100%", marginBottom: 10 }}>
         <input
           ref={searchInputRef}
-          style={{ width: "100%" }}
           placeholder="Search"
           onChange={handleSearch}
         />
@@ -240,35 +218,3 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById("react-page")).render(<App />)
-
-const figmaStyles = {
-  border: "1px solid #e5e5e5",
-  fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
-  fontSize: {
-    base: 11,
-  },
-  fontWeight: {
-    bold: 600,
-  },
-  color: {
-    hover: "rgba(0,0,0,.06)",
-  },
-  borderRadius: 3,
-}
-
-const headerStyle: React.CSSProperties = {
-  listStyle: "none",
-  margin: 0,
-  padding: 6,
-  fontWeight: figmaStyles.fontWeight.bold,
-  position: "sticky",
-  top: 0,
-  background: "#FFF",
-}
-
-const itemStyle: React.CSSProperties = {
-  listStyle: "none",
-  padding: 6,
-  borderRadius: 6,
-}

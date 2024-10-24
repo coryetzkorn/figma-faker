@@ -14,7 +14,7 @@ const fakerOptions: IFakerOptions = [
       },
       {
         name: "Full name",
-        methodName: "person.fullName",
+        methodName: "name.findName",
       },
       {
         name: "Prefix",
@@ -71,7 +71,7 @@ const fakerOptions: IFakerOptions = [
       },
       {
         name: "Hex color",
-        methodName: "color.rgb",
+        methodName: "internet.color",
       },
     ],
   },
@@ -182,7 +182,7 @@ const fakerOptions: IFakerOptions = [
     children: [
       {
         name: "Phone number",
-        methodName: "phone.number",
+        methodName: "phone.phoneNumberFormat",
       },
     ],
   },
@@ -191,7 +191,7 @@ const fakerOptions: IFakerOptions = [
     children: [
       {
         name: "Number",
-        methodName: "number.int",
+        methodName: "random.number",
       },
       {
         name: "Float",
@@ -203,11 +203,11 @@ const fakerOptions: IFakerOptions = [
       },
       {
         name: "Word",
-        methodName: "lorem.word",
+        methodName: "random.word",
       },
       {
         name: "Multiple words",
-        methodName: "lorem.words",
+        methodName: "random.words",
       },
       {
         name: "UUID",
