@@ -1,4 +1,3 @@
-import * as Faker from "faker"
 import { IFakerOption, IPluginMessage } from "./faker"
 
 figma.showUI(__html__, { height: 340, width: 240 })
@@ -34,10 +33,12 @@ function traverseSelection() {
   }
 }
 
-function replaceText(fakerOption: IFakerOption) {
+async function replaceText(fakerOption: IFakerOption) {
   if (textNodes.length) {
+    // Use dynamic import to lazy load faker-js
+    const faker = await import("@faker-js/faker")
     const fakerMethodArray = fakerOption.methodName.split(".")
-    const fakerMethod = Faker[fakerMethodArray[0]][fakerMethodArray[1]]
+    const fakerMethod = faker[fakerMethodArray[0]][fakerMethodArray[1]]
     for (const textNode of textNodes) {
       figma.loadFontAsync(textNode.fontName as FontName).then(() => {
         textNode.characters = fakerMethod().toString()

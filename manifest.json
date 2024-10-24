@@ -3,5 +3,10 @@
   "id": "833836762121994814",
   "api": "1.0.0",
   "main": "dist/code.js",
-	"ui": "dist/ui.html"
+  "ui": "dist/ui.html",
+  "editorType": ["figma", "figjam"],
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  },
+  "documentAccess": "dynamic-page"
 }

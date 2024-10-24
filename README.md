@@ -7,37 +7,50 @@ Faker is built on top of [faker.js](https://github.com/Marak/faker.js).
 
 ## Data Included
 
-+ Names
-+ Addresses
-+ Companies
-+ Phone numbers
-+ Dates
-+ Lorem Ipsum
-+ Internet text
-+ Commerce text
-+ Finance text
-+ Random text
-+ Computer system text
-+ Hacker text
+- Names
+- Addresses
+- Companies
+- Phone numbers
+- Dates
+- Lorem Ipsum
+- Internet text
+- Commerce text
+- Finance text
+- Random text
+- Computer system text
+- Hacker text
 
 ## Usage
 
-+ Install it from the [Figma plugin library](https://www.figma.com/community/plugin/833836762121994814)
-+ Select one or more objects
-+ Open the plugin and select a placeholder text option
-+ Any text nodes in the selection will be replaced with the Faker text of your choice
+- Install it from the [Figma plugin library](https://www.figma.com/community/plugin/833836762121994814)
+- Select one or more objects
+- Open the plugin and select a placeholder text option
+- Any text nodes in the selection will be replaced with the Faker text of your choice
 
 ## Development
 
 First clone this repository
+
 ```shell
 git clone https://github.com/coryetzkorn/figma-faker
 cd figma-faker
 ```
 
-Install dependencies & build files
+Install dependencies
+
 ```shell
 npm install
+```
+
+Watch the plugin in development
+
+```shell
+npm run dev
+```
+
+Or build the plugin for production
+
+```shell
 npm run build
 ```
 
