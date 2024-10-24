@@ -161,7 +161,7 @@ function App() {
     const options = getFilteredOptions()
     return (
       <div className="scroller">
-        <div>
+        <div className="scroller-inner">
           {options.length ? (
             options.map((optionGroup) => renderOptionGroup(optionGroup))
           ) : (
@@ -178,10 +178,7 @@ function App() {
     return (
       <div className="option-group">
         <div className="option-group-header">{optionGroup.name}</div>
-        <ul
-          className="option-group-list"
-          style={{ margin: 0, padding: "5px 0" }}
-        >
+        <ul className="option-group-list">
           {optionGroup.children.map((option) => {
             return (
               <li
@@ -198,19 +195,36 @@ function App() {
     )
   }
 
+  const handleResetIconClick = () => {
+    clearSearchString()
+  }
+
+  const hasQuery = state.searchString.length > 0
+
   return (
     <div>
-      <div style={{ position: "relative", width: "100%", marginBottom: 10 }}>
+      <div className="search-input-container">
         <input
+          className="search-input"
           ref={searchInputRef}
           placeholder="Search"
           onChange={handleSearch}
         />
-        <img
-          style={{ display: "block", position: "absolute", top: 7, right: 7 }}
-          src={require("./icons/search.svg")}
-          alt="Search icon"
-        />
+        <button
+          onClick={handleResetIconClick}
+          className={`input-icon ${hasQuery ? "input-icon-active" : ""}`}
+        >
+          <img
+            style={{ display: hasQuery ? "none" : "block" }}
+            src={require("./icons/search.svg")}
+            alt="Search icon"
+          />
+          <img
+            style={{ display: hasQuery ? "block" : "none" }}
+            src={require("./icons/close.svg")}
+            alt="Clsoe icon"
+          />
+        </button>
       </div>
       <div>{renderOptions()}</div>
     </div>

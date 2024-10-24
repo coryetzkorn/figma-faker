@@ -1,39 +1,95 @@
 body {
   text-align: center;
-  margin: 10px;
+  margin: 10px 10px 0 10px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, SFProLocalRange;
   font-size: 11px;
+  font-weight: 450;
+  cursor: default;
 }
 
-input {
+.search-input-container {
+  position: relative;
+}
+
+.search-input {
   border: none;
   outline: none;
-  padding: 8px;
+  padding: 0 8px;
+  height: 30px;
   background: #f5f5f5;
   border-radius: 6px;
+  width: 100%;
+  font-size: 11px;
+  font-weight: 450;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, SFProLocalRange;
 }
 
-input:focus {
+.input-icon {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.input-icon-active:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.input-icon-active:active {
+  background-color: rgba(0, 0, 0, 0.09);
+}
+
+.search-input:hover {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.search-input:focus {
   box-shadow: inset 0 0 0 1px #18a0fb;
 }
 
 .scroller {
-  height: 280px;
+  height: 298px;
+  margin-top: 0;
   overflow-y: scroll;
+}
+
+.scroller-inner {
+  padding: 0 0 10px 0;
 }
 
 .no-results {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+}
+
+.option-group {
+  margin: 10px 0;
+}
+
+.scroller-inner .option-group:last-child {
+  margin-bottom: 0;
 }
 
 .option-group-list {
   margin: 0;
-  padding: 5px 0;
+  padding: 0;
   text-align: left;
 }
 
@@ -54,10 +110,15 @@ input:focus {
   border-radius: 2px;
   border: 1px solid transparent;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .option-group-item:hover {
   background: #f5f5f5;
+}
+
+.option-group-item:active {
+  background: #ebebeb;
 }
 
 .option-group-item.selected {

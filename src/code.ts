@@ -44,7 +44,7 @@ async function replaceText(fakerOption: IFakerOption) {
       })
     }
   } else {
-    figma.closePlugin("Select at least one text node before using Faker.")
+    figma.closePlugin("Select at least one text node before using Faker")
   }
 }
 
@@ -67,8 +67,6 @@ async function getLsRecents() {
 }
 
 figma.ui.onmessage = (pluginMessage: IPluginMessage) => {
-  console.log("faker", faker)
-
   if (pluginMessage.type === "run-faker") {
     console.log("faker", faker)
     clearTextNodes()
