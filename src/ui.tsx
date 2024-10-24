@@ -15,6 +15,8 @@ const initialState: IState = { searchString: "", recentOptions: [] }
 function App() {
   const searchInputRef = React.useRef<HTMLInputElement>(null)
   const [state, setState] = React.useState<IState>(initialState)
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null)
+  const optionRefs = React.useRef<(HTMLLIElement | null)[]>([])
 
   const setSearchFocus = () => {
     searchInputRef.current.focus()
@@ -98,6 +100,7 @@ function App() {
       ...prev,
       searchString: e.target.value,
     }))
+    setSelectedIndex(null) // Reset selectedIndex when search changes
   }
 
   const setLsRecents = (fakerOptions: Array<IFakerOption>) => {
@@ -157,13 +160,73 @@ function App() {
     }
   }, [])
 
+  const getAllOptions = () => {
+    return getFilteredOptions().flatMap((group) => group.children)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const allOptions = getAllOptions()
+    if (allOptions.length === 0) return
+
+    switch (e.key) {
+      case "ArrowDown":
+        setSelectedIndex((prevIndex) => {
+          if (prevIndex === null || prevIndex === allOptions.length - 1) {
+            return 0
+          }
+          return prevIndex + 1
+        })
+        break
+      case "ArrowUp":
+        setSelectedIndex((prevIndex) => {
+          if (prevIndex === null || prevIndex === 0) {
+            return allOptions.length - 1
+          }
+          return prevIndex - 1
+        })
+        break
+      case "Enter":
+        if (selectedIndex !== null) {
+          const selectedOption = allOptions[selectedIndex]
+          runFaker(selectedOption)
+        }
+        break
+      default:
+        break
+    }
+  }
+
+  React.useEffect(() => {
+    const handleKeyDownWrapper = (e: KeyboardEvent) =>
+      handleKeyDown(e as unknown as React.KeyboardEvent)
+    window.addEventListener("keydown", handleKeyDownWrapper)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDownWrapper)
+    }
+  }, [selectedIndex, state.searchString])
+
+  React.useEffect(() => {
+    if (selectedIndex !== null) {
+      const selectedElement = optionRefs.current[selectedIndex]
+      if (selectedElement) {
+        selectedElement.scrollIntoView({ block: "nearest", inline: "start" })
+      }
+    }
+  }, [selectedIndex])
+
   const renderOptions = () => {
     const options = getFilteredOptions()
+    let optionIndex = 0
+    optionRefs.current = []
     return (
       <div className="scroller">
         <div className="scroller-inner">
           {options.length ? (
-            options.map((optionGroup) => renderOptionGroup(optionGroup))
+            options.map((optionGroup) => {
+              const groupElement = renderOptionGroup(optionGroup, optionIndex)
+              optionIndex += optionGroup.children.length
+              return groupElement
+            })
           ) : (
             <div className="no-results">
               <div>No Results 😢</div>
@@ -174,16 +237,22 @@ function App() {
     )
   }
 
-  const renderOptionGroup = (optionGroup: IFakerOptionGroup) => {
+  const renderOptionGroup = (
+    optionGroup: IFakerOptionGroup,
+    startIndex: number
+  ) => {
     return (
-      <div className="option-group">
+      <div className="option-group" key={optionGroup.name}>
         <div className="option-group-header">{optionGroup.name}</div>
         <ul className="option-group-list">
-          {optionGroup.children.map((option) => {
+          {optionGroup.children.map((option, index) => {
+            const globalIndex = startIndex + index
+            const isSelected = selectedIndex === globalIndex
             return (
               <li
                 key={option.methodName}
-                className="option-group-item"
+                ref={(el) => (optionRefs.current[globalIndex] = el)}
+                className={`option-group-item ${isSelected ? "selected" : ""}`}
                 onClick={() => runFaker(option)}
               >
                 {option.name}
@@ -202,31 +271,35 @@ function App() {
   const hasQuery = state.searchString.length > 0
 
   return (
-    <div>
+    <div className="app-container">
       <div className="search-input-container">
-        <input
-          className="search-input"
-          ref={searchInputRef}
-          placeholder="Search"
-          onChange={handleSearch}
-        />
-        <button
-          onClick={handleResetIconClick}
-          className={`input-icon ${hasQuery ? "input-icon-active" : ""}`}
-        >
-          <img
-            style={{ display: hasQuery ? "none" : "block" }}
-            src={require("./icons/search.svg")}
-            alt="Search icon"
+        <div className="search-input-relative">
+          <input
+            className="search-input-input"
+            ref={searchInputRef}
+            placeholder="Search"
+            onChange={handleSearch}
           />
-          <img
-            style={{ display: hasQuery ? "block" : "none" }}
-            src={require("./icons/close.svg")}
-            alt="Clsoe icon"
-          />
-        </button>
+          <button
+            onClick={handleResetIconClick}
+            className={`search-input-icon ${
+              hasQuery ? "search-input-icon-active" : ""
+            }`}
+          >
+            <img
+              style={{ display: hasQuery ? "none" : "block" }}
+              src={require("./icons/search.svg")}
+              alt="Search icon"
+            />
+            <img
+              style={{ display: hasQuery ? "block" : "none" }}
+              src={require("./icons/close.svg")}
+              alt="Close icon"
+            />
+          </button>
+        </div>
       </div>
-      <div>{renderOptions()}</div>
+      <div className="options-container">{renderOptions()}</div>
     </div>
   )
 }
