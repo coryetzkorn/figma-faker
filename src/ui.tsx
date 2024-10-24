@@ -1,13 +1,10 @@
+import { faker } from "@faker-js/faker"
 import * as React from "react"
 import * as ReactDOM from "react-dom/client"
 import { IFakerOption, IFakerOptionGroup, IPluginMessage } from "./faker"
 import fakerOptions from "./fakerOptions"
 
 import "./ui.css"
-
-declare function require(path: string): any
-
-interface IProps {}
 
 interface IState {
   searchString: string
@@ -192,7 +189,7 @@ function App() {
         style={{
           textAlign: "left",
           fontSize: figmaStyles.fontSize.base,
-          margin: "10px 0",
+          margin: "5px 0",
         }}
       >
         <div style={headerStyle}>{optionGroup.name}</div>
@@ -212,6 +209,10 @@ function App() {
       </div>
     )
   }
+
+  React.useEffect(() => {
+    console.log("--- faker ----", faker)
+  }, [])
 
   return (
     <div
@@ -242,7 +243,8 @@ ReactDOM.createRoot(document.getElementById("react-page")).render(<App />)
 
 const figmaStyles = {
   border: "1px solid #e5e5e5",
-  fontFamily: "Inter, sans-serif",
+  fontFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
   fontSize: {
     base: 11,
   },
@@ -258,15 +260,15 @@ const figmaStyles = {
 const headerStyle: React.CSSProperties = {
   listStyle: "none",
   margin: 0,
-  padding: "8px 0",
+  padding: 6,
   fontWeight: figmaStyles.fontWeight.bold,
   position: "sticky",
   top: 0,
   background: "#FFF",
-  borderBottom: figmaStyles.border,
 }
 
 const itemStyle: React.CSSProperties = {
   listStyle: "none",
   padding: 6,
+  borderRadius: 6,
 }

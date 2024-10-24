@@ -1,12 +1,10 @@
 {
   "compilerOptions": {
+    "target": "es6",
     "jsx": "react",
-    "baseUrl": "./",
-    "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-    "paths": {
-      "@faker-js/faker": ["node_modules/@faker-js/faker"]
-    }
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
